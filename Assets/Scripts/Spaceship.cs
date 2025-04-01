@@ -16,13 +16,22 @@ public class Spaceship : MonoBehaviour
     float maxY = 5.2f;
     private float bulletSpeed = 20f;
 
+    private GameController gameController;
+
     // Awake is called when the script instance is first instanced
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         // set random position
         transform.position = new Vector3(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY), 0);
+        gameObject.name = "Spaceship";
     }
+
+    public void setGameController(GameController _gameController)
+    {
+        this.gameController = _gameController;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -94,6 +103,7 @@ public class Spaceship : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Asteroid"))
         {
+            gameController.timeDied = Time.time;
             GameObject explosion = Instantiate(explosionPrefab);
             explosion.transform.position = transform.position;
             // Destroy the spaceship

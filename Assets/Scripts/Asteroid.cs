@@ -4,6 +4,8 @@ public class Asteroid : MonoBehaviour
 {
     public GameObject explosionPrefab;
     private Rigidbody2D rb;
+
+    private GameController gameController;
     private float maxX = 10.5f;
     private float maxY = 6.2f;
     private float maxSpeed = 2.5f;
@@ -20,12 +22,19 @@ public class Asteroid : MonoBehaviour
 
         scale = maxScale;
         rb = GetComponent<Rigidbody2D>();
-
+        gameObject.name = "Asteroid";
+        gameObject.tag = "Asteroid";
         // set random position
         transform.position = new Vector3(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY), 0);
-        rb.linearVelocity = new Vector2(Random.Range(minSpeed, maxSpeed), Random.Range(minSpeed, maxSpeed));
-        // rb.linearVelocity = new Vector2(0,0);
+        // rb.linearVelocity = new Vector2(Random.Range(minSpeed, maxSpeed), Random.Range(minSpeed, maxSpeed));
+        rb.linearVelocity = new Vector2(0,0);
     }
+
+    public void setGameController(GameController _gameController)
+    {
+        this.gameController = _gameController;
+    }
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -88,10 +97,15 @@ public class Asteroid : MonoBehaviour
         main.simulationSpeed = 1 * (maxScale - scale + 1);
         partSys.Play();
         
-        if (scale > 0)
-        {
-            SpawnChildAsteroid();
-        }
+        // if (scale > 0)
+        // {
+        //     SpawnChildAsteroid();
+        //     // update the number of asteroids (+4)
+        //     gameController.numAsteroids += 4;
+        // }
+
+        // update the number of asteroids (-1)
+        gameController.numAsteroids -= 1;
         Destroy(gameObject);
     }
 
@@ -110,15 +124,16 @@ public class Asteroid : MonoBehaviour
             newDirections[i] = Quaternion.Euler(0, 0, randAngle + Random.Range(-30,30)) * newDirections[i];
             GameObject childAsteroid = Instantiate(asteroidPrefab);
             Asteroid asteroidHandle = childAsteroid.GetComponent<Asteroid>();
-            childAsteroid.tag = "Asteroid";
             childAsteroid.transform.position = transform.position + (Vector3)newDirections[i] * childAsteroidOffset;
             childAsteroid.transform.localScale = transform.localScale / 2;
             asteroidHandle.scale = scale - 1;
             asteroidHandle.childAsteroidOffset = childAsteroidOffset / 2;
+            asteroidHandle.setGameController(gameController);
+            
             Rigidbody2D childRb = childAsteroid.GetComponent<Rigidbody2D>();
             // Mass goes down by facctor of egiht because it's cubic
             childRb.mass = rb.mass / 8;
-            childRb.AddForce(newDirections[i] * childAsteroidOffset* 2);
+            childRb.AddForce(newDirections[i] * childAsteroidOffset * childAsteroidOffset * childAsteroidOffset * 5);
         }
     }   
 }
