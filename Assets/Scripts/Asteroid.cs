@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    public GameObject explosionPrefab;
     private Rigidbody2D rb;
-
     private float maxX = 10.5f;
     private float maxY = 6.2f;
     private float maxSpeed = 2.5f;
@@ -72,6 +72,22 @@ public class Asteroid : MonoBehaviour
 
     private void Die()
     {
+        GameObject explosion = Instantiate(explosionPrefab);
+        explosion.transform.position = transform.position;
+        ParticleSystem partSys = explosion.GetComponent<ParticleSystem>();
+        partSys.Stop();
+        var main = partSys.main;
+        if (scale < 3 && scale > 0)
+        {
+            main.startSize = scale;
+        }
+        else if (scale == 0)
+        {
+            main.startSize = 0.5f;
+        }
+        main.simulationSpeed = 1 * (maxScale - scale);
+        partSys.Play();
+        
         if (scale > 0)
         {
             SpawnChildAsteroid();

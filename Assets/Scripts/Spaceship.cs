@@ -3,6 +3,7 @@ using UnityEngine;
 public class Spaceship : MonoBehaviour
 {   
     public GameObject bulletPrefab;
+    public GameObject explosionPrefab;
     private float maxSpeed = 2f;
     private float trhustForce = 0.00015f;
     private float turnSpeed = 180;
@@ -93,6 +94,8 @@ public class Spaceship : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Asteroid"))
         {
+            GameObject explosion = Instantiate(explosionPrefab);
+            explosion.transform.position = transform.position;
             // Destroy the spaceship
             Destroy(gameObject);
         }
