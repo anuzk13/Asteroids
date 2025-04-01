@@ -85,7 +85,7 @@ public class Asteroid : MonoBehaviour
         {
             main.startSize = 0.5f;
         }
-        main.simulationSpeed = 1 * (maxScale - scale);
+        main.simulationSpeed = 1 * (maxScale - scale + 1);
         partSys.Play();
         
         if (scale > 0)
