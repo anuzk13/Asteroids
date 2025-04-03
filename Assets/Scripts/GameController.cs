@@ -168,7 +168,8 @@ public class GameController : MonoBehaviour
 
         Destroy(spaceship);
         spaceship = null;
-        numLivesLeft--;
+        // Intialize Level ->  Spawn Spaceship reduces the number of lives by one
+        numLivesLeft++;
         InitializeLevel();
     }
 }
