@@ -26,19 +26,13 @@ public class Asteroid : MonoBehaviour
         gameObject.tag = "Asteroid";
         // set random position
         transform.position = new Vector3(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY), 0);
-        // rb.linearVelocity = new Vector2(Random.Range(minSpeed, maxSpeed), Random.Range(minSpeed, maxSpeed));
-        rb.linearVelocity = new Vector2(0,0);
+        rb.linearVelocity = new Vector2(Random.Range(minSpeed, maxSpeed), Random.Range(minSpeed, maxSpeed));
+        // rb.linearVelocity = new Vector2(0,0);
     }
 
     public void setGameController(GameController _gameController)
     {
         this.gameController = _gameController;
-    }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -75,6 +69,7 @@ public class Asteroid : MonoBehaviour
         health -= 1;
         if (health == 0)
         {
+            gameController.IncreaseScore();
             Die();
         }
     }
@@ -97,12 +92,12 @@ public class Asteroid : MonoBehaviour
         main.simulationSpeed = 1 * (maxScale - scale + 1);
         partSys.Play();
         
-        // if (scale > 0)
-        // {
-        //     SpawnChildAsteroid();
-        //     // update the number of asteroids (+4)
-        //     gameController.numAsteroids += 4;
-        // }
+        if (scale > 0)
+        {
+            SpawnChildAsteroid();
+            // update the number of asteroids (+4)
+            gameController.numAsteroids += 4;
+        }
 
         // update the number of asteroids (-1)
         gameController.numAsteroids -= 1;

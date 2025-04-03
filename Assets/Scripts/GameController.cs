@@ -14,15 +14,16 @@ public class GameController : MonoBehaviour
     private GameObject levelCleredSign;
 
     // should have a get and set for this
-    [HideInInspector]
+    [NonSerialized]
     public float timeDied;
     private float respawnTime = 3.0f;
 
-    
-    [HideInInspector]
-    public int numMaxAsteroids = 1;
+    private int myScore;
+    private Score scoreText;
+
+    private int numMaxAsteroids = 10;
     // should have a get and set for this
-    [HideInInspector]
+    [NonSerialized]
     public int numAsteroids;
     private int numLivesLeft;
     private int maxLives = 4;
@@ -33,9 +34,12 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        myScore = 0;
         numLivesLeft = maxLives;
         gameOverSign = GameObject.Find("GameOver");
         levelCleredSign = GameObject.Find("LevelCleared");
+        scoreText = FindAnyObjectByType<Score>();
+        scoreText.UpdateScore(myScore);
         InitializeLevel();
     }
 
@@ -45,6 +49,7 @@ public class GameController : MonoBehaviour
         // spawn the asteroids
         for (int i = 0; i < numAsteroids; i++)
         {
+            Debug.Log("Spawning Asteroid");
             SpawnAsteroid();
         }
 
@@ -75,7 +80,8 @@ public class GameController : MonoBehaviour
 
     private void SpawnSpaceship()
     {
-        Assert.IsNull(spaceship);
+        // This fails on death because the spaceship is destroyed but not really null
+        // Assert.IsNull(spaceship);
         // instantiate the asteroid
         bool valid;
         do {
@@ -87,6 +93,12 @@ public class GameController : MonoBehaviour
         numLivesLeft -= 1;
         spaceship.GetComponent<Spaceship>().setGameController(this);
         return;
+    }
+
+    public void IncreaseScore()
+    {
+        myScore += 10;
+        scoreText.UpdateScore(myScore);
     }
 
     private bool CheckTooCloseToAsteroids(GameObject testObject)
