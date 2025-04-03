@@ -86,7 +86,6 @@ public class GameController : MonoBehaviour
         bool valid;
         do {
             spaceship = Instantiate(spaceshipPrefab);
-            spaceship.gameObject.tag = "Spaceship";
             valid = CheckTooCloseToAsteroids(spaceship);
         } while (valid == false);
 

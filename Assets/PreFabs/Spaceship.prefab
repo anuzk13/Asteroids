@@ -105,6 +105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3163910153738845771, guid: 616cabac8e2fc4cfca9f3fd671ddef90, type: 3}
   explosionPrefab: {fileID: 100000, guid: fabdd45f98921b547b28c84c0818d2a4, type: 3}
+  shootingSoundFX: {fileID: 8300000, guid: 70fa8c6c7914045fd856c801a27c0aea, type: 3}
+  thursterSoundFX: {fileID: 8300000, guid: 76df6d33570de4b37bfc8fe298fdf8a1, type: 3}
 --- !u!50 &8519006851886760578
 Rigidbody2D:
   serializedVersion: 5

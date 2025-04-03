@@ -18,13 +18,19 @@ public class Spaceship : MonoBehaviour
 
     private GameController gameController;
 
+    private AudioSource audioSource;
+    public AudioClip shootingSoundFX;
+    public AudioClip thursterSoundFX;
+
     // Awake is called when the script instance is first instanced
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         // set random position
-        transform.position = new Vector3(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY), 0);
+        transform.position = new Vector3(Random.Range(-maxX + 2f, maxX - 2f), Random.Range(-maxY + 2f, maxY - 2f), 0);
         gameObject.name = "Spaceship";
+        gameObject.tag = "Spaceship";
     }
 
     public void setGameController(GameController _gameController)
@@ -61,10 +67,20 @@ public class Spaceship : MonoBehaviour
             // move forward
             rb.AddForce(shipDirection * trhustForce);
         }
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            audioSource.Stop();
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            audioSource.clip = thursterSoundFX;
+            audioSource.Play();
+        }
 
         // ship firing
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            audioSource.PlayOneShot(shootingSoundFX);
             // create a bullet
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             bullet.transform.rotation = transform.rotation * Quaternion.Euler(0, 0, 90);

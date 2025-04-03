@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class AsteroidExplosion : MonoBehaviour
 {
+    private AudioSource audioSource;
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         gameObject.name = "AsteroidExplosion";
         gameObject.tag = "AsteroidExplosion";
     }
@@ -19,9 +21,10 @@ public class AsteroidExplosion : MonoBehaviour
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }
-    // Update is called once per frame
-    void Update()
+    
+    public void SetAudio(float volumeLevel, float pitchLevel)
     {
-        
+        audioSource.pitch = pitchLevel;
+        audioSource.volume = volumeLevel;
     }
 }

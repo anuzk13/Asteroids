@@ -77,6 +77,8 @@ public class Asteroid : MonoBehaviour
     private void Die()
     {
         GameObject explosion = Instantiate(explosionPrefab);
+        int scaleFactor = maxScale - scale;
+        explosion.GetComponent<AsteroidExplosion>().SetAudio(0.8f - scaleFactor * 0.25f, 1 + scaleFactor * 0.5f);
         explosion.transform.position = transform.position;
         ParticleSystem partSys = explosion.GetComponent<ParticleSystem>();
         partSys.Stop();
